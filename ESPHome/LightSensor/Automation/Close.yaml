@@ -1,0 +1,20 @@
+alias: Close window
+description: ""
+triggers:
+  - trigger: time_pattern
+    minutes: /10
+conditions:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.lightsensor_toggle_automation_off_1_hr
+        state: "off"
+      - condition: numeric_state
+        entity_id: sensor.lightsensor_ambient_light
+        below: 50
+actions:
+  - device_id: 1b42041519f48bfa3146d3c47d29f77b
+    domain: button
+    entity_id: 72ff7582558f49c777608552235c7528
+    type: press
+mode: single
