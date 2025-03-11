@@ -13,8 +13,8 @@ conditions:
         entity_id: sensor.lightsensor_ambient_light
         below: 50
 actions:
-  - device_id: 1b42041519f48bfa3146d3c47d29f77b
+  - device_id: ---------
     domain: button
-    entity_id: 72ff7582558f49c777608552235c7528
+    entity_id: ---------
     type: press
 mode: single
