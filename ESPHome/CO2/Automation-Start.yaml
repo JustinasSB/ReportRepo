@@ -1,0 +1,15 @@
+alias: CO2 Recuperator start
+description: ""
+triggers:
+  - trigger: numeric_state
+    entity_id:
+      - sensor.co2reader_co2_concentration
+    above: 550
+conditions: []
+actions:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: -------------------
+mode: single
