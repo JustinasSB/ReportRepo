@@ -1,0 +1,32 @@
+esphome:
+  name: lightsensor
+  friendly_name: LightSensor
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+
+api:
+  port: 6052
+
+ota:
+  - platform: esphome
+
+wifi:
+
+i2c:
+  sda: 21
+  scl: 23
+  scan: True
+
+sensor:
+  - platform: bh1750
+    name: "Ambient Light"
+    address: 0x23
+    update_interval: 5s
+
+captive_portal:
+    
