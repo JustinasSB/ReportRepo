@@ -1,0 +1,32 @@
+esphome:
+  name: CReceiver
+  friendly_name: CReceiver
+  includes:
+    - custom_rf_receiver.h
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+  level: DEBUG
+
+custom_component:
+  - lambda: |-
+      auto rf_receiver = new CustomRFReceiver(19, false, 10);
+      return {rf_receiver};
+
+api:
+
+ota:
+
+switch:
+  - platform: gpio
+    pin: 21
+    id: rf_cs_pin
+    restore_mode: ALWAYS_ON
+
+wifi:
+
+captive_portal:
