@@ -1,0 +1,99 @@
+esphome:
+  name: co2reader
+  friendly_name: CO2Reader
+  includes:
+    - scd4x_sensor.h
+  libraries:
+    - Wire
+    - Improv=https://github.com/sparkfun/SparkFun_SCD4x_Arduino_Library.git#v1.1.2
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+
+api:
+
+ota:
+
+i2c:
+  - sda: GPIO19
+    scl: GPIO18
+    id: bus_a
+    scan: true
+  - sda: GPIO23
+    scl: GPIO22
+    id: bus_b
+    scan: True
+
+wifi:
+
+sensor:
+  - platform: custom
+    lambda: |-
+      auto my_sensor = new SCD4xSensor();
+      App.register_component(my_sensor);
+      return {
+        my_sensor->get_co2_sensor(),
+        my_sensor->get_temperature_sensor(),
+        my_sensor->get_humidity_sensor()
+      };
+    sensors:
+      - name: "CO2 Concentration"
+        unit_of_measurement: "ppm"
+        id: co2
+      - name: "Temperature"
+        unit_of_measurement: "°C"
+        accuracy_decimals: 1
+        id: temp
+      - name: "Humidity"
+        unit_of_measurement: "%"
+        accuracy_decimals: 1
+        id: humid
+
+interval:
+  - interval: 5s 
+    then:
+      - lvgl.label.update:
+          id: carbon
+          text:
+            format: "CO2: %.0f ppm"
+            args: [id(co2).state]
+      - lvgl.label.update:
+          id: temperature
+          text:
+            format: "Temp: %.1f °C"
+            args: [id(temp).state]
+      - lvgl.label.update:
+          id: humidity
+          text:
+            format: "Humid: %.1f %%"
+            args: [id(humid).state]
+
+lvgl:
+  bg_color: 0x000000
+  default_font: montserrat_16
+  widgets:
+    - label:
+        id: carbon
+        x: 0
+        y: 0 
+    - label:
+        id: temperature
+        x: 0
+        y: 20 
+    - label:
+        id: humidity
+        x: 0
+        y: 40 
+
+display:
+  - platform: ssd1306_i2c
+    i2c_id: bus_b
+    model: SSD1306_128X64
+    address: 0x3C
+    auto_clear_enabled: False
+
+captive_portal:
