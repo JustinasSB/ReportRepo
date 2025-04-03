@@ -1,0 +1,81 @@
+esphome:
+  name: co2reader
+  friendly_name: CO2Reader
+  includes:
+    - scd4x_sensor.h
+  libraries:
+    - Wire
+    - Improv=https://github.com/sparkfun/SparkFun_SCD4x_Arduino_Library.git#v1.1.2
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+
+api:
+
+ota:
+
+i2c:
+  - sda: GPIO19
+    scl: GPIO18
+    id: bus_a
+    scan: true
+  - sda: GPIO23
+    scl: GPIO22
+    id: bus_b
+    scan: True
+
+wifi:
+
+sensor:
+  - platform: custom
+    lambda: |-
+      auto my_sensor = new SCD4xSensor();
+      App.register_component(my_sensor);
+      return {
+        my_sensor->get_co2_sensor(),
+        my_sensor->get_temperature_sensor(),
+        my_sensor->get_humidity_sensor()
+      };
+    sensors:
+      - name: "CO2 Concentration"
+        unit_of_measurement: "ppm"
+        id: co2
+      - name: "Temperature"
+        unit_of_measurement: "°C"
+        accuracy_decimals: 1
+        id: temp
+      - name: "Humidity"
+        unit_of_measurement: "%"
+        accuracy_decimals: 1
+        id: humid
+
+display:
+  - platform: ssd1306_i2c
+    i2c_id: bus_b
+    model: SSD1306_128X64
+    address: 0x3C
+    auto_clear_enabled: False
+    lambda: |-
+      if(id(co2).has_state()){
+        it.printf(0, 0, id(myfont), "CO2: %.1f ppm", id(co2).state);
+      }
+      if(id(temp).has_state()){
+        it.printf(0, 10, id(myfont), "Temp: %.1f °C", id(temp).state);
+      }
+      if(id(humid).has_state()){
+        it.printf(0, 20, id(myfont), "Humid: %.1f %%", id(humid).state);
+      }
+    update_interval: 10s
+
+
+
+font:
+  - file: "Minecraftia-Regular.ttf"
+    id: myfont
+    size: 8
+
+captive_portal:
