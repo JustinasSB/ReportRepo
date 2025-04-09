@@ -1,0 +1,17 @@
+description: "Disable AC turn on automation"
+mode: single
+triggers:
+  - trigger: state
+    entity_id:
+      - binary_sensor.workday_sensor
+conditions:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: "off"
+actions:
+  - action: automation.turn_off
+    metadata: {}
+    data:
+      stop_actions: true
+    target:
+      entity_id: automation.ac_turn_on
