@@ -1,0 +1,17 @@
+description: "Turn on ac automation when workday"
+mode: single
+triggers:
+  - trigger: state
+    entity_id:
+      - binary_sensor.workday_sensor
+conditions:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: "on"
+actions:
+  - action: automation.turn_on
+    metadata: {}
+    data:
+      stop_actions: true
+    target:
+      entity_id: automation.ac_turn_on
