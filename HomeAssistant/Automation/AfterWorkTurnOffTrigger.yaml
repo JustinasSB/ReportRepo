@@ -1,0 +1,23 @@
+description: AC turn off during non-work hours
+mode: single
+triggers:
+  - trigger: time_pattern
+    hours: /1
+conditions:
+  - condition: time
+    after: "19:00:00"
+    before: "06:00:00"
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+actions:
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.ac_turn_off
+alias: AC turn off trigger
