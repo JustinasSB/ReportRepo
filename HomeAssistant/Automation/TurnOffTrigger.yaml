@@ -1,0 +1,29 @@
+description: AC turn off trigger when ideal temp
+mode: single
+triggers:
+  - trigger: time_pattern
+    minutes: /10
+conditions:
+  - condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: Temperature
+        below: 22
+        above: 21
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        before: "19:00:00"
+        after: "06:00:00"
+actions:
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.ac_turn_off
+alias: AC turn off trigger
