@@ -1,0 +1,21 @@
+description: AC turn on during work hours
+mode: single
+triggers:
+  - trigger: time
+    at: "06:01:00"
+conditions:
+  - condition: time
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+actions:
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.ac_turn_on
+alias: AC turn on trigger
