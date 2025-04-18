@@ -1,0 +1,97 @@
+views:
+  - title: Home
+    layout: grid
+    layout_options:
+      grid-template-columns: 1fr 1fr 1fr
+      grid-template-rows: auto auto
+    cards:
+      - type: vertical-stack
+        view_layout:
+          grid-column: 1
+          grid-row: 1
+        cards:
+          - type: heading
+            heading_style: subtitle
+          - type: tile
+            entity: binary_sensor.workday_sensor
+            color: green
+            show_entity_picture: false
+            hide_state: true
+            vertical: true
+            name: Work Hours
+            icon: mdi:briefcase
+            grid_options:
+              columns: full
+              rows: 2
+          - type: entities
+            entities:
+              - entity: sensor.guestroomlightsensor_ambient_light
+                name: Ambient Light
+                secondary_info: none
+              - entity: sensor.co2_light_co2_concentration
+                name: CO2 Concentration
+              - entity: sensor.co2_light_humidity
+                name: Humidity
+              - entity: sensor.co2_light_temperature
+                name: Temperature
+      - type: vertical-stack
+        view_layout:
+          grid-column: 2
+          grid-row: 1
+        cards:
+          - type: heading
+            heading_style: subtitle
+          - graph: line
+            type: sensor
+            entity: sensor.guestroomlightsensor_ambient_light
+            detail: 1
+            name: Ambient Light
+            grid_options:
+              columns: 12
+              rows: 2
+            hours_to_show: 2
+          - type: gauge
+            entity: sensor.co2_light_co2_concentration
+            severity:
+              green: 0
+              yellow: 1000
+              red: 2000
+            max: 5000
+            min: 0
+            name: Co2 Concentration
+            unit: ppm
+            needle: false
+      - type: vertical-stack
+        view_layout:
+          grid-column: 3
+          grid-row: 1
+        cards:
+          - type: heading
+            heading_style: subtitle
+          - type: gauge
+            entity: sensor.co2_light_humidity
+            name: Humidity
+            severity:
+              green: 45
+              yellow: 0
+              red: 55
+            needle: false
+            min: 0
+            max: 100
+          - type: gauge
+            entity: sensor.co2_light_temperature
+            needle: true
+            severity:
+              green: 20
+              yellow: 23
+              red: 23
+            max: 30
+            min: 13
+            name: Temperature
+    badges:
+      - type: entity
+        show_name: false
+        show_state: true
+        show_icon: true
+        entity: sensor.sun_next_dawn
+        color: ''
